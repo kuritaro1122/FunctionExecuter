@@ -17,11 +17,16 @@ internal class FunctionExecutorTester : MonoBehaviour
             .BeginAction();
 
         entity2.ComponentFunctionExecutor_Node()
-            .SetNode(0)
-            .SetFunction(new F_WaitForSeconds(4f))
-            .SetFunction(new F_DebugLog("test"))
-            .SetFunction(new F_Destroy())
-            .BeginAction();
+            .SetNode(0, (false, 1, () => true))
+            .SetFunction(new F_DebugLog("node0"))
+            .SetFunction(new F_WaitForSeconds(1f))
+            //.SetFunction(new F_Destroy())
+            .SetNode(1, (false, 0, () => true))
+            .SetFunction(
+                new F_DebugLog("node1"),
+                new F_WaitForSeconds(1f)
+                )
+            .BeginAction(0);
     }
 
     // Update is called once per frame
