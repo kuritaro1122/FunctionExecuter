@@ -5,11 +5,13 @@ using UnityEngine;
 namespace FuncExecutor {
     public class FunctionExecutor : MonoBehaviour, IFunctionExecutor {
         private FE_IFunction[] functions;
+        public bool Running { get; private set; } = false;
         /// <summary>
         /// 命令を初期化
         /// </summary>
         public FunctionExecutor ResetAll() {
             this.functions = null;
+            this.StopAllCoroutines();
             return this;
         }
         /// <summary>
@@ -23,11 +25,17 @@ namespace FuncExecutor {
         /// 設定した命令を実行
         /// </summary>
         public Coroutine BeginAction() { //重複の可能性
+            if (this.Running) {
+                UnityEngine.Debug.LogWarning("FunctionExecutor/ already execute function.", this);
+                return null;
+            }
             return StartCoroutine(MainCoroutine());
         }
 
         private IEnumerator MainCoroutine() {
-            return FunctionsExecute(this, this.functions);
+            this.Running = true;
+            yield return FunctionsExecute(this, this.functions);
+            this.Running = false;
         }
         public MonoBehaviour IGetMonoBehaviour() => this;
 

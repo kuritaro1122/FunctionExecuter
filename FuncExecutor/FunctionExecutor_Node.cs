@@ -7,7 +7,7 @@ namespace FuncExecutor {
     public class FunctionExecutor_Node : MonoBehaviour, IFunctionExecutor {
         private FunctionNode[] functionNodes;
         private int nodeIndex;
-
+        public int GetNodeIndex() => this.nodeIndex;
 
         private FunctionNode GetNode() {
             if (functionNodes != null && functionNodes.Length - 1 >= nodeIndex)
@@ -88,10 +88,11 @@ namespace FuncExecutor {
 
         private IEnumerator MainCoroutine() {
             while (true) {
+                if (this.nodeIndex < 0) break;
                 FunctionNode action = GetNode();
                 if (action == null) {
                     Debug.LogError("EntityActionCon_Node/ActionNodes is null.\nindex => " + nodeIndex, this);
-                    break; //breakの方がいい？
+                    break;
                 }
                 functionCoroutine = Function();
                 StartCoroutine(functionCoroutine);
@@ -100,21 +101,25 @@ namespace FuncExecutor {
                     yield return action.GetFunctionCoroutine(this);
                     int? nextIndex = action.GetTransitionOrderIndex();
                     this.nodeIndex = nextIndex ?? this.nodeIndex;
+                    this.nodeIndex = nextIndex ?? -1;
                     functionCoroutine = null;
                 }
-
+                //StopAllCoroutines();
                 yield return new WaitUntil(() => functionCoroutine == null);
             }
         }
 
         void Update() {
             //強制ノード遷移処理
+            if (this.nodeIndex < 0) return;
             if (GetNode() != null) {
                 int? nextIndex = GetNode().GetForcedTransitionOrderIndex();
                 if (nextIndex != null) {
                     this.nodeIndex = nextIndex ?? 0;
-                    StopCoroutine(functionCoroutine);
+                    //StopCoroutine(functionCoroutine);
+                    StopAllCoroutines();
                     functionCoroutine = null;
+                    BeginAction(this.nodeIndex);
                 }
             }
         }
@@ -127,7 +132,7 @@ namespace FuncExecutor {
             enumerator = null;
         }
 
-        private class FunctionNode { //structでもいい？
+        private class FunctionNode {
             private FE_IFunction[] functions;
             private NodeTransition[] nodeTransitions;
             private NodeTransition[] nodeForcedTransitions;
@@ -144,13 +149,6 @@ namespace FuncExecutor {
                 this.functions = MergeArrayClass.MergeArray(this.functions, functions);
             }
             public IEnumerator GetFunctionCoroutine(IFunctionExecutor executor) {
-                /*foreach (var function in functions) {
-                    if (function.IGetIsAsyn()) {
-                        executor.IGetMonoBehaviour()
-                            .StartCoroutine(function.IGetFunction(executor));
-                        //yield return null;
-                    } else yield return function.IGetFunction(executor);
-                }*/
                 return FunctionExecutor.FunctionsExecute(executor, this.functions);
             }
             public int? GetTransitionOrderIndex() => GetOrderIndex(nodeTransitions);
