@@ -36,7 +36,7 @@ F_DebugLog(string message)
 F_Action(System.Action action)
 F_Action(System.Action<IFunctionExecutor> action)
 F_Coroutine(bool asyn, System.Func<IEnumerator> enumerator)
-F_Coroutine(bool asyn, System.Func<IFunction>)
+F_Coroutine(bool asyn, System.Func<IFunctionExecutor, IEnumerator> enumerator)
 
 F_ChainFunction(bool asyn, params FE_IFunction[] functions)
 F_LoopFunction(bool asyn, Func<bool> condition, params FE_IFunction[] functions)
