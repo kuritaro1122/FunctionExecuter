@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -73,23 +72,6 @@ namespace FuncExecutor {
         }
         public bool IGetIsAsyn() => asyn;
     }
-
-    /*public struct F_MultiFunction : FE_IFunction {
-        private FE_IFunction[] functions;
-        private bool asyn;
-        public F_MultiFunction(bool asyn, params FE_IFunction[] functions) {
-            this.asyn = asyn;
-            this.functions = MergeArrayClass.MergeArray(functions);
-        }
-        public IEnumerator IGetFunction(IFunctionExecutor executor) {
-
-        }
-        public bool IGetIsAsyn() => asyn;
-        private class FunctionChecker {
-            private FE_IFunction function;
-            private int runState = 0;
-        }
-    }*/
 
     public struct F_LoopFunction : FE_IFunction {
         enum LoopType { Condition, Count, Both }

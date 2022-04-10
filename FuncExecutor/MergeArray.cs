@@ -1,8 +1,4 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-
-namespace FuncExecutor {
+﻿namespace FuncExecutor {
     public static class MergeArrayClass {
         public static T[] MergeArray<T>(T[] array1, params T[] array2) {
             int length1 = (array1 != null) ? array1.Length : 0;
@@ -24,4 +20,3 @@ namespace FuncExecutor {
         }
     }
 }
-

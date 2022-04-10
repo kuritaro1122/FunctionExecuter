@@ -116,7 +116,6 @@ namespace FuncExecutor {
                 int? nextIndex = GetNode().GetForcedTransitionOrderIndex();
                 if (nextIndex != null) {
                     this.nodeIndex = nextIndex ?? 0;
-                    //StopCoroutine(functionCoroutine);
                     StopAllCoroutines();
                     functionCoroutine = null;
                     BeginAction(this.nodeIndex);
