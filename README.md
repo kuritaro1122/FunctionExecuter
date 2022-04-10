@@ -2,7 +2,7 @@
 
 # FunctionExecutor
 
-GameObjectに命令を付与し、非同期的に逐次実行する。
+GameObjectに命令を付与し、非同期的に逐次実行する。\
 [EntityActionCon](https://github.com/kuritaro1122/EntityActionCon)の基底プログラムです。
 
 <!--# DEMO
