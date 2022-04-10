@@ -1,3 +1,5 @@
+[FunctionExecutor_Nodeはこちら](/README_node.md)
+
 # FunctionExecutor
 
 GameObjectに命令を付与し、非同期的に逐次実行する。
