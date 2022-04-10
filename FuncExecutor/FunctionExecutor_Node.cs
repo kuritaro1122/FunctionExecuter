@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -124,12 +123,12 @@ namespace FuncExecutor {
         }
 
         //ノード遷移
-
         private void KillCoroutine(ref IEnumerator enumerator) {
             if (enumerator == null) return;
             StopCoroutine(enumerator);
             enumerator = null;
         }
+        public MonoBehaviour IGetMonoBehaviour() => this;
 
         private class FunctionNode {
             private FE_IFunction[] functions;
@@ -172,8 +171,6 @@ namespace FuncExecutor {
                 else return null;
             }
         }
-
-        public MonoBehaviour IGetMonoBehaviour() => this;
     }
 
     public static class AddComponenter_FE_N {

@@ -28,18 +28,16 @@ namespace FuncExecutor {
 
     public struct F_Destroy : FE_IFunction {
         private GameObject gameObject;
-        private System.Action action;
         /// <summary>
         /// オブジェクトを破壊する。
         /// </summary>
         /// <param name="gameObject">nullなら命令を実行したオブジェクトを破壊する。</param>
         /// <param name="action">破壊時に実行するコマンド</param>
-        public F_Destroy(GameObject gameObject = null, System.Action action = null) {
+        public F_Destroy(GameObject gameObject = null) {
             this.gameObject = gameObject;
-            this.action = action;
         }
         public IEnumerator IGetFunction(IFunctionExecutor executor) {
-            if (action != null) action();
+
             yield return null;
             if (gameObject == null) gameObject = executor.IGetMonoBehaviour().gameObject;
             MonoBehaviour.Destroy(gameObject);
@@ -59,8 +57,38 @@ namespace FuncExecutor {
         public bool IGetIsAsyn() => false;
     }
 
+    public struct F_Action : FE_IFunction {
+        private System.Action<IFunctionExecutor> action;
+        public F_Action(System.Action action) {
+            this.action = fe => action();
+        }
+        public F_Action(System.Action<IFunctionExecutor> action) {
+            this.action = action;
+        }
+        public IEnumerator IGetFunction(IFunctionExecutor executor) {
+            action(executor);
+            return null;
+        }
+        public bool IGetIsAsyn() => false;
+    }
+
+    public class F_Coroutine : FE_IFunction {
+        private System.Func<IFunctionExecutor, IEnumerator> enumerator;
+        private bool asyn;
+        public F_Coroutine(bool asyn, System.Func<IEnumerator> enumerator) {
+            this.enumerator = fe => enumerator();
+            this.asyn = asyn;
+        }
+        public F_Coroutine(bool asyn, System.Func<IFunctionExecutor, IEnumerator> enumerator) {
+            this.enumerator = enumerator;
+            this.asyn = asyn;
+        }
+        public IEnumerator IGetFunction(IFunctionExecutor executor) => this.enumerator(executor);
+        public bool IGetIsAsyn() => this.asyn;
+    }
+
     //===== 特殊Function =====
-    public struct F_ChainFunction : FE_IFunction { //functionグループ
+    public struct F_ChainFunction : FE_IFunction {
         private FE_IFunction[] functions;
         private bool asyn;
         public F_ChainFunction(bool asyn, params FE_IFunction[] functions) {
@@ -116,29 +144,6 @@ namespace FuncExecutor {
             bool t3 = type == LoopType.Both && (and ? condition() && count > 0 : condition() || count > 0);
             return t1 || t2 || t3;
         }
-        public bool IGetIsAsyn() => this.asyn;
-    }
-
-    public struct F_Action : FE_IFunction {
-        private Action action;
-        public F_Action(Action action) {
-            this.action = action;
-        }
-        public IEnumerator IGetFunction(IFunctionExecutor executor) {
-            action();
-            return null;
-        }
-        public bool IGetIsAsyn() => false;
-    }
-
-    public class F_Coroutine : FE_IFunction {
-        private Func<IEnumerator> enumerator;
-        private bool asyn;
-        public F_Coroutine(bool asyn, Func<IEnumerator> enumerator) {
-            this.enumerator = enumerator;
-            this.asyn = asyn;
-        }
-        public IEnumerator IGetFunction(IFunctionExecutor executor) => this.enumerator();
         public bool IGetIsAsyn() => this.asyn;
     }
 }

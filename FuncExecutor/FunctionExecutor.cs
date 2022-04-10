@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 
 namespace FuncExecutor {
@@ -60,7 +59,6 @@ namespace FuncExecutor {
             return component;
         }
     }
-
     public static class AddComponenter_FE {
         public static FunctionExecutor ComponentFunctionExecutor(this GameObject self) {
             return self.ComponentCheck<FunctionExecutor>();
