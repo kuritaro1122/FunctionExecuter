@@ -1,7 +1,9 @@
 [FunctionExecutorはこちら](/README.md)
 # FunctionExecutor_Node
 
-GameObjectに命令を付与し、非同期的に逐次実行する。
+GameObjectに命令を付与し、非同期的に逐次実行する。\
+ノードごとに命令をまとめ、それらを遷移しながら実行する。\
+ノードの遷移は逐次的遷移と強制遷移のに種類を選ぶことができ、ゲームのボスなどのプログラム処理に重宝する。
 
 <!--# DEMO
 
