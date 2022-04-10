@@ -82,7 +82,6 @@ int? GetTransitionOrder()
 
 * bool asynをtrueにすると、前の命令の終了を待たずに実行されます。
 * 新たな命令を追加したい場合には、F_ActionやF_Coroutineを使うか、FE_IFunctionを継承したクラスを作ってください。
-* このプログラムを敵の操作に使ったり、TransformやGameObjectに頻繁にアクセスする場合にはFunctionExecutorの上位互換のEntityActionConを使ってください。
 
 # License
 
