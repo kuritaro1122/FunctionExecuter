@@ -1,5 +1,5 @@
 [FunctionExecutorはこちら](/README.md)
-# FunctionExecutor
+# FunctionExecutor_Node
 
 GameObjectに命令を付与し、非同期的に逐次実行する。
 
@@ -43,7 +43,9 @@ F_WaitUntil(System.Func<bool> condition)
 F_Destroy(GameObject gameObject = null)
 F_DebugLog(string message)
 F_Action(System.Action action)
+F_Action(System.Action<IFunctionExecutor> action)
 F_Coroutine(bool asyn, System.Func<IEnumerator> enumerator)
+F_Coroutine(bool asyn, System.Func<IFunction>)
 
 F_ChainFunction(bool asyn, params FE_IFunction[] functions)
 F_LoopFunction(bool asyn, Func<bool> condition, params FE_IFunction[] functions)
